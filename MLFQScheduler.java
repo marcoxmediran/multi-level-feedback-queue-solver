@@ -1,6 +1,7 @@
 public class MLFQScheduler {
         private Queue timeline;
         private Queue inputQueue;
+        private Queue resultQueue;
         private Queue queueA;
         private Queue queueB;
         private Queue queueC;
@@ -10,38 +11,37 @@ public class MLFQScheduler {
                 this.initializeQueues();
         }
 
-        public Queue run() {
+        public void run() {
                 System.out.println("[inputQueue]");
                 inputQueue.print();
                 System.out.println("");
 
-                Queue results = new Queue();
-
                 int processedJobCount = 0;
-                for (int time = 0; processedJobCount != timeline.size(); time++) {
+                for (int time = 0; processedJobCount < timeline.size(); time++) {
+
+                        if (time > 80)
+                                break;
+
                         System.out.printf("[Time %02d]\n", time);
-                        while (!timeline.isEmpty() && inputQueue.front().getArrivalTime() == time) {
+                        while (!inputQueue.isEmpty() && inputQueue.front().getArrivalTime() == time) {
                                 System.out.println("input -> queueA");
                                 inputQueue.offer();
                         }
 
                         if (!queueA.isEmpty()) {
-                                System.out.println("queueA -> queueB");
-                                queueA.offer();
+                                queueA.RR(4);
                         }
-                        if (!queueB.isEmpty()) {
-                                System.out.println("queueB -> queueC");
-                                queueB.offer();
+                        else if (!queueB.isEmpty()) {
+                                queueB.RR(2);
                         }
-                        if (!queueC.isEmpty()) {
-                                System.out.println("Proccessing queueC");
+                        else if (!queueC.isEmpty()) {
+                                queueC.FCFS(processedJobCount);
                         } else {
                                 continue;
                         }
 
-                        processedJobCount++;
                 }
-                return results;
+                resultQueue.print();
         }
 
         public void initializeTimeline(Queue timeline) {
@@ -51,6 +51,7 @@ public class MLFQScheduler {
 
         public void initializeQueues() {
                 this.inputQueue = new Queue(this.timeline);
+                this.resultQueue = new Queue();
                 this.queueA = new Queue();
                 this.queueB = new Queue();
                 this.queueC = new Queue();
@@ -58,6 +59,11 @@ public class MLFQScheduler {
                 this.inputQueue.setNextQueue(this.queueA);
                 this.queueA.setNextQueue(this.queueB);
                 this.queueB.setNextQueue(this.queueC);
+                this.queueC.setNextQueue(this.resultQueue);
+
+                this.queueA.setResultQueue(this.resultQueue);
+                this.queueB.setResultQueue(this.resultQueue);
+                this.queueC.setResultQueue(this.resultQueue);
         }
 
 }

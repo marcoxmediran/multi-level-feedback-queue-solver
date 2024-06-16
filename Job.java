@@ -2,28 +2,25 @@ public class Job {
         private char id;
         private int arrivalTime;
         private int burstTime;
-        private int priority;
         private int remainingTime;
         private int level;
         private int endTime;
         private int turnAroundTime;
         private int waitingTime;
 
-        public Job(char id, int arrivalTime, int burstTime, int priority) {
+        public Job(char id, int arrivalTime, int burstTime) {
                 this.id = id;
                 this.arrivalTime = arrivalTime;
                 this.burstTime = burstTime;
-                this.priority = priority;
                 this.remainingTime = burstTime;
                 this.level = 0;
                 this.endTime = arrivalTime;
         }
 
-        public Job(char id, int arrivalTime, int burstTime, int priority, int remainingTime, int level, int endTime, int turnAroundTime, int waitingTime) {
+        public Job(char id, int arrivalTime, int burstTime, int remainingTime, int level, int endTime, int turnAroundTime, int waitingTime) {
                 this.id = id;
                 this.arrivalTime = arrivalTime;
                 this.burstTime = burstTime;
-                this.priority = priority;
                 this.remainingTime = remainingTime;
                 this.level = level;
                 this.endTime = endTime;
@@ -37,6 +34,10 @@ public class Job {
 
         public int getRemainingTime() {
                 return this.remainingTime;
+        }
+
+        public void setRemainingTime(int time) {
+                this.remainingTime = time;
         }
 
         public int getTurnAroundTime() {
@@ -68,10 +69,10 @@ public class Job {
         }
 
         public Job copy() {
-                return new Job(this.id, this.arrivalTime, this.burstTime, this.priority, this.remainingTime, this.level, this.endTime, this.turnAroundTime, this.waitingTime);
+                return new Job(this.id, this.arrivalTime, this.burstTime, this.remainingTime, this.level, this.endTime, this.turnAroundTime, this.waitingTime);
         }
 
         public String toString() {
-                return this.id + "\t" + this.arrivalTime + "\t" + this.burstTime + "\t" + this.priority + "\t" + this.remainingTime + "\t" + this.level + "\t" + this.endTime + "\t" + this.turnAroundTime + "\t" + this.waitingTime;
+                return this.id + "\t" + this.arrivalTime + "\t" + this.burstTime + "\t" + this.remainingTime + "\t" + this.endTime + "\t" + this.turnAroundTime + "\t" + this.waitingTime;
         }
 }

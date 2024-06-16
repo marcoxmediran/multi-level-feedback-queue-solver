@@ -4,6 +4,7 @@ import java.util.Comparator;
 public class Queue {
         private ArrayList<Job> queue;
         private Queue next;
+        private Queue result;
 
         public Queue(ArrayList<Job> timeline) {
                 this.queue = new ArrayList<>();
@@ -35,6 +36,10 @@ public class Queue {
                 this.next.enqueue(this.dequeue());
         }
 
+        public void moveToResult() {
+                this.result.enqueue(this.dequeue());
+        }
+
         public void requeue() {
                 this.enqueue(this.dequeue());
         }
@@ -61,6 +66,32 @@ public class Queue {
                 this.next = next;
         }
 
+        public void setResultQueue(Queue result) {
+                this.result = result;
+        }
+
+        public void RR(int quantum) {
+                while (!this.isEmpty()) {
+                        Job currentJob = this.front();
+                        if (currentJob.getRemainingTime() <= quantum) {
+                                currentJob.setRemainingTime(0);
+                                System.out.println("Job in range of quantum");
+                                System.out.println(currentJob);
+                                this.moveToResult();
+                        } else {
+                                currentJob.setRemainingTime(currentJob.getRemainingTime() - quantum);
+                                System.out.println("queueA -> queueB");
+                                System.out.println(currentJob);
+                                this.offer();
+                        }
+                }
+                System.out.println("RR Done");
+        }
+
+        public void FCFS(int processedJobCount) {
+                processedJobCount++;
+        }
+
         public void sort(String mode) {
                 switch (mode) {
                         case "AT":
@@ -72,7 +103,7 @@ public class Queue {
         }
 
         public void print() {
-                System.out.println("ID\tAT\tBT\tPrio\tRT\tLevel\tET\tTaT\tWT");
+                System.out.println("ID\tAT\tBT\tRT\tET\tTaT\tWT");
                 for (Job job : this.queue) {
                         System.out.println(job);
                 }
