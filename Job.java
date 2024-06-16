@@ -48,8 +48,8 @@ public class Job {
                 return this.waitingTime;
         }
 
-        public void decrementRemainingTime() {
-                this.remainingTime--;
+        public void decrementRemainingTime(int time) {
+                this.remainingTime -= 1;
         }
 
         public boolean isDone() {

@@ -70,34 +70,45 @@ public class Queue {
                 this.result = result;
         }
 
+        public void incrementAllEndTime(int time) {
+                for (Job job : this.queue) {
+                        job.incrementEndTime(time);
+                }
+        }
+
         public void RR(int quantum, Logger logger) {
-                while (!this.isEmpty()) {
-                        Job currentJob = this.front();
-                        if (currentJob.getRemainingTime() <= quantum) {
-                                logger.incrementTime(currentJob.getRemainingTime());
-                                logger.incrementCount();
-                                currentJob.setEndTime(logger.time);
-                                currentJob.setRemainingTime(0);
-                                System.out.println("Job in range of quantum");
-                                System.out.println(currentJob);
-                                this.moveToResult();
-                        } else {
-                                logger.incrementTime(quantum);
-                                currentJob.setEndTime(logger.time);
-                                currentJob.setRemainingTime(currentJob.getRemainingTime() - quantum);
-                                System.out.println(currentJob);
-                                this.offer();
-                        }
+                Job currentJob = this.front();
+                System.out.println(currentJob);
+                System.out.println(logger.quantumCounter + "/" + quantum);
+                logger.incrementTime(1);
+                currentJob.setEndTime(logger.time);
+                currentJob.decrementRemainingTime(1);
+                logger.incrementQuantumCounter();
+
+                if (currentJob.getRemainingTime() == 0) {
+                        System.out.println(logger.quantumCounter + "/" + quantum);
+                        logger.incrementCount();
+                        logger.resetQuantumCounter();
+                        System.out.println(currentJob);
+                        this.moveToResult();
+                }
+
+                if (logger.quantumCounter == quantum) {
+                        System.out.println(logger.quantumCounter + "/" + quantum);
+                        System.out.println(currentJob);
+                        this.offer();
+                        logger.resetQuantumCounter();
                 }
         }
 
         public void FCFS(Logger logger) {
-                while (!this.isEmpty()) {
-                        Job currentJob = this.front();
-                        logger.incrementTime(currentJob.getRemainingTime());
+                Job currentJob = this.front();
+                logger.incrementTime(1);
+                currentJob.setEndTime(logger.time);
+                currentJob.decrementRemainingTime(1);
+
+                if (currentJob.getRemainingTime() == 0) {
                         logger.incrementCount();
-                        currentJob.setEndTime(logger.time);
-                        currentJob.setRemainingTime(0);
                         this.moveToResult();
                 }
         }

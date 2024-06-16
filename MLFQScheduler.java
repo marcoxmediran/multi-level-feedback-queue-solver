@@ -5,11 +5,13 @@ public class MLFQScheduler {
         private Queue queueA;
         private Queue queueB;
         private Queue queueC;
+        private int[] quantums;
         private Logger logger;
 
         public MLFQScheduler(Queue timeline) {
                 this.initializeTimeline(timeline);
                 this.initializeQueues();
+                this.quantums = new int[]{4, 2};
                 this.logger = new Logger();
         }
 
@@ -20,7 +22,7 @@ public class MLFQScheduler {
 
                 while (true) {
                         System.out.printf("[Time %02d]\n", logger.time);
-                        while (!inputQueue.isEmpty() && inputQueue.front().getArrivalTime() <= logger.time) {
+                        while (!inputQueue.isEmpty() && inputQueue.front().getArrivalTime() == logger.time) {
                                 inputQueue.front().setEndTime(logger.time);
                                 System.out.println(inputQueue.front());
                                 inputQueue.offer();
@@ -30,7 +32,7 @@ public class MLFQScheduler {
                                 queueA.RR(4, this.logger);
                         }
                         else if (!queueB.isEmpty()) {
-                                queueB.RR(2, this.logger);
+                                queueB.RR(4, this.logger);
                         }
                         else if (!queueC.isEmpty()) {
                                 queueC.FCFS(this.logger);
@@ -67,9 +69,4 @@ public class MLFQScheduler {
                 this.queueB.setResultQueue(this.resultQueue);
                 this.queueC.setResultQueue(this.resultQueue);
         }
-
-        public void setTime(int time) {
-                time = 25;
-        }
-
 }
