@@ -56,12 +56,6 @@ public class Queue {
                 return this.queue.isEmpty();
         }
 
-        public void incrementAllEndTime() {
-                for (Job job : this.queue) {
-                        job.incrementEndTime();
-                }
-        }
-
         public void setNextQueue(Queue next) {
                 this.next = next;
         }
@@ -70,15 +64,19 @@ public class Queue {
                 this.result = result;
         }
 
-        public void RR(int quantum) {
+        public void RR(int quantum, Logger logger) {
                 while (!this.isEmpty()) {
                         Job currentJob = this.front();
                         if (currentJob.getRemainingTime() <= quantum) {
+                                logger.incrementTime(currentJob.getRemainingTime());
+                                currentJob.incrementEndTime(currentJob.getRemainingTime());
                                 currentJob.setRemainingTime(0);
                                 System.out.println("Job in range of quantum");
                                 System.out.println(currentJob);
                                 this.moveToResult();
                         } else {
+                                logger.incrementTime(quantum);
+                                currentJob.incrementEndTime(quantum);
                                 currentJob.setRemainingTime(currentJob.getRemainingTime() - quantum);
                                 System.out.println("queueA -> queueB");
                                 System.out.println(currentJob);
@@ -88,8 +86,8 @@ public class Queue {
                 System.out.println("RR Done");
         }
 
-        public void FCFS(int processedJobCount) {
-                processedJobCount++;
+        public void FCFS(Logger logger) {
+                logger.incrementCount();
         }
 
         public void sort(String mode) {

@@ -56,8 +56,8 @@ public class Job {
                 return this.remainingTime == 0;
         }
 
-        public void incrementEndTime() {
-                this.endTime++;
+        public void incrementEndTime(int time) {
+                this.endTime += time;
         }
 
         public void calculateTurnAroundTime() {

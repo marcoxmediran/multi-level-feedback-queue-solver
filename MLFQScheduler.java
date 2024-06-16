@@ -5,10 +5,12 @@ public class MLFQScheduler {
         private Queue queueA;
         private Queue queueB;
         private Queue queueC;
+        private Logger logger;
 
         public MLFQScheduler(Queue timeline) {
                 this.initializeTimeline(timeline);
                 this.initializeQueues();
+                this.logger = new Logger();
         }
 
         public void run() {
@@ -16,29 +18,28 @@ public class MLFQScheduler {
                 inputQueue.print();
                 System.out.println("");
 
-                int processedJobCount = 0;
-                for (int time = 0; processedJobCount < timeline.size(); time++) {
+                for (; this.logger.count < timeline.size();) {
 
-                        if (time > 80)
-                                break;
-
-                        System.out.printf("[Time %02d]\n", time);
-                        while (!inputQueue.isEmpty() && inputQueue.front().getArrivalTime() == time) {
+                        System.out.printf("[Time %02d]\n", logger.time);
+                        while (!inputQueue.isEmpty() && inputQueue.front().getArrivalTime() <= logger.time) {
                                 System.out.println("input -> queueA");
                                 inputQueue.offer();
                         }
 
                         if (!queueA.isEmpty()) {
-                                queueA.RR(4);
+                                queueA.RR(4, this.logger);
                         }
                         else if (!queueB.isEmpty()) {
-                                queueB.RR(2);
+                                queueB.RR(2, this.logger);
                         }
                         else if (!queueC.isEmpty()) {
-                                queueC.FCFS(processedJobCount);
+                                queueC.FCFS(this.logger);
                         } else {
                                 continue;
                         }
+
+                        if (this.logger.time == 18)
+                                break;
 
                 }
                 resultQueue.print();
@@ -64,6 +65,10 @@ public class MLFQScheduler {
                 this.queueA.setResultQueue(this.resultQueue);
                 this.queueB.setResultQueue(this.resultQueue);
                 this.queueC.setResultQueue(this.resultQueue);
+        }
+
+        public void setTime(int time) {
+                time = 25;
         }
 
 }
