@@ -2,26 +2,30 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class Queue {
+        public String name;
         private ArrayList<Job> queue;
         private Queue next;
         private Queue result;
 
-        public Queue(ArrayList<Job> timeline) {
+        public Queue(ArrayList<Job> timeline, String name) {
                 this.queue = new ArrayList<>();
                 for (Job job : timeline) {
                         this.queue.add(job);
                 }
+                this.name = name;
         }
 
-        public Queue(Queue input) {
+        public Queue(Queue input, String name) {
                 this.queue = new ArrayList<>();
                 for (Job job : input.queue) {
                         this.queue.add(job);
                 }
+                this.name = name;
         }
 
-        public Queue() {
+        public Queue(String name) {
                 this.queue = new ArrayList<>();
+                this.name = name;
         }
 
         public void enqueue(Job job) {
@@ -33,10 +37,12 @@ public class Queue {
         }
 
         public void offer() {
+                System.out.println(this.name + " -> " + this.next.name);
                 this.next.enqueue(this.dequeue());
         }
 
         public void moveToResult() {
+                System.out.println(this.name + " -> " + this.result.name);
                 this.result.enqueue(this.dequeue());
         }
 
@@ -69,6 +75,7 @@ public class Queue {
                         Job currentJob = this.front();
                         if (currentJob.getRemainingTime() <= quantum) {
                                 logger.incrementTime(currentJob.getRemainingTime());
+                                logger.incrementCount();
                                 currentJob.setEndTime(logger.time);
                                 currentJob.setRemainingTime(0);
                                 System.out.println("Job in range of quantum");
@@ -78,16 +85,28 @@ public class Queue {
                                 logger.incrementTime(quantum);
                                 currentJob.setEndTime(logger.time);
                                 currentJob.setRemainingTime(currentJob.getRemainingTime() - quantum);
-                                System.out.println("queueA -> queueB");
                                 System.out.println(currentJob);
                                 this.offer();
                         }
                 }
-                System.out.println("RR Done");
         }
 
         public void FCFS(Logger logger) {
-                logger.incrementCount();
+                while (!this.isEmpty()) {
+                        Job currentJob = this.front();
+                        logger.incrementTime(currentJob.getRemainingTime());
+                        logger.incrementCount();
+                        currentJob.setEndTime(logger.time);
+                        currentJob.setRemainingTime(0);
+                        this.moveToResult();
+                }
+        }
+
+        public void calculateResults() {
+                for (Job job : this.queue) {
+                        job.calculateTurnAroundTime();
+                        job.calculateWaitingTime();
+                }
         }
 
         public void sort(String mode) {

@@ -19,10 +19,8 @@ public class MLFQScheduler {
                 System.out.println("");
 
                 while (true) {
-
                         System.out.printf("[Time %02d]\n", logger.time);
                         while (!inputQueue.isEmpty() && inputQueue.front().getArrivalTime() <= logger.time) {
-                                System.out.println("input -> queueA");
                                 inputQueue.front().setEndTime(logger.time);
                                 System.out.println(inputQueue.front());
                                 inputQueue.offer();
@@ -43,24 +41,22 @@ public class MLFQScheduler {
                         if (this.logger.count == this.timeline.size())
                                 break;
 
-                        if (this.logger.time >= 18)
-                                break;
-
                 }
+                resultQueue.calculateResults();
                 resultQueue.print();
         }
 
         public void initializeTimeline(Queue timeline) {
-                this.timeline = new Queue(timeline);
+                this.timeline = new Queue(timeline, "TIMELINE");
                 this.timeline.sort("AT");
         }
 
         public void initializeQueues() {
-                this.inputQueue = new Queue(this.timeline);
-                this.resultQueue = new Queue();
-                this.queueA = new Queue();
-                this.queueB = new Queue();
-                this.queueC = new Queue();
+                this.inputQueue = new Queue(this.timeline, "input");
+                this.resultQueue = new Queue("result");
+                this.queueA = new Queue("queueA");
+                this.queueB = new Queue("queueB");
+                this.queueC = new Queue("queueC");
 
                 this.inputQueue.setNextQueue(this.queueA);
                 this.queueA.setNextQueue(this.queueB);
