@@ -69,14 +69,14 @@ public class Queue {
                         Job currentJob = this.front();
                         if (currentJob.getRemainingTime() <= quantum) {
                                 logger.incrementTime(currentJob.getRemainingTime());
-                                currentJob.incrementEndTime(currentJob.getRemainingTime());
+                                currentJob.setEndTime(logger.time);
                                 currentJob.setRemainingTime(0);
                                 System.out.println("Job in range of quantum");
                                 System.out.println(currentJob);
                                 this.moveToResult();
                         } else {
                                 logger.incrementTime(quantum);
-                                currentJob.incrementEndTime(quantum);
+                                currentJob.setEndTime(logger.time);
                                 currentJob.setRemainingTime(currentJob.getRemainingTime() - quantum);
                                 System.out.println("queueA -> queueB");
                                 System.out.println(currentJob);

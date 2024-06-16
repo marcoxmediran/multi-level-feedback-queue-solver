@@ -1,9 +1,9 @@
 public class Main {
         public static void main(String[] args) {
-                Job a = new Job('a', 0, 3);
-                Job b = new Job('b', 2, 4);
-                Job c = new Job('c', 4, 5);
-                Job d = new Job('d', 6, 6);
+                Job a = new Job('a', 2, 5);
+                Job b = new Job('b', 4, 4);
+                Job c = new Job('c', 8, 3);
+                Job d = new Job('d', 9, 6);
 
                 Queue timeline = new Queue();
                 timeline.enqueue(a);

@@ -18,11 +18,13 @@ public class MLFQScheduler {
                 inputQueue.print();
                 System.out.println("");
 
-                for (; this.logger.count < timeline.size();) {
+                while (true) {
 
                         System.out.printf("[Time %02d]\n", logger.time);
                         while (!inputQueue.isEmpty() && inputQueue.front().getArrivalTime() <= logger.time) {
                                 System.out.println("input -> queueA");
+                                inputQueue.front().setEndTime(logger.time);
+                                System.out.println(inputQueue.front());
                                 inputQueue.offer();
                         }
 
@@ -35,10 +37,13 @@ public class MLFQScheduler {
                         else if (!queueC.isEmpty()) {
                                 queueC.FCFS(this.logger);
                         } else {
-                                continue;
+                                this.logger.incrementTime(1);
                         }
 
-                        if (this.logger.time == 18)
+                        if (this.logger.count == this.timeline.size())
+                                break;
+
+                        if (this.logger.time >= 18)
                                 break;
 
                 }

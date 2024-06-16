@@ -56,6 +56,10 @@ public class Job {
                 return this.remainingTime == 0;
         }
 
+        public void setEndTime(int time) {
+                this.endTime = time;
+        }
+
         public void incrementEndTime(int time) {
                 this.endTime += time;
         }
