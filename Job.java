@@ -31,6 +31,10 @@ public class Job {
                 this.quantumTime = 0;
         }
 
+        public char getID() {
+                return this.id;
+        }
+
         public int getArrivalTime() {
                 return this.arrivalTime;
         }

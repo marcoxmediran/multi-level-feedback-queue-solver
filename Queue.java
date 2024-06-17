@@ -82,6 +82,8 @@ public class Queue {
 
         public void RR(int quantum, Logger logger) {
                 Job currentJob = this.front();
+                Log log = new Log(currentJob.getID(), currentJob.getLevel(), logger.getTime());
+
                 if (currentJob.getRemainingTime() <= quantum) {
                         logger.incrementTime(currentJob.getRemainingTime());
                         currentJob.setEndTime(logger.getTime());
@@ -94,25 +96,38 @@ public class Queue {
                         currentJob.setRemainingTime(currentJob.getRemainingTime() - quantum);
                         this.offer();
                 }
+
+                log.setEndTime(logger.getTime());
+                logger.addLog(log);
         }
 
         public void FCFS(Logger logger) {
                 Job currentJob = this.front();
+                Log log = new Log(currentJob.getID(), currentJob.getLevel(), logger.getTime());
                 logger.incrementTime(currentJob.getRemainingTime());
+
                 logger.incrementCount();
                 currentJob.setEndTime(logger.getTime());
                 currentJob.setRemainingTime(0);
                 this.moveToResult();
+
+                log.setEndTime(logger.getTime());
+                logger.addLog(log);
         }
 
         public void SJF(Logger logger) {
                 this.sort("SJF");
                 Job currentJob = this.front();
+                Log log = new Log(currentJob.getID(), currentJob.getLevel(), logger.getTime());
                 logger.incrementTime(currentJob.getRemainingTime());
+
                 logger.incrementCount();
                 currentJob.setEndTime(logger.getTime());
                 currentJob.setRemainingTime(0);
                 this.moveToResult();
+
+                log.setEndTime(logger.getTime());
+                logger.addLog(log);
         }
 
         // TODO

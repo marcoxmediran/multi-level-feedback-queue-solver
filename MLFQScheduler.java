@@ -59,6 +59,8 @@ public class MLFQScheduler {
                 resultQueue.calculateResults();
                 System.out.println("[RESULTS]");
                 resultQueue.print();
+                System.out.println("\n[GANTT CHART]");
+                this.logger.printLogs();
         }
 
         public void initializeTimeline(Queue timeline) {
