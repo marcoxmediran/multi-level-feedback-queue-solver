@@ -6,13 +6,15 @@ public class MLFQScheduler {
         private Queue queueB;
         private Queue queueC;
         private int[] quantums;
+        private int finalMode;
         private Logger logger;
 
-        public MLFQScheduler(Queue timeline, int quantumA, int quantumB) {
+        public MLFQScheduler(Queue timeline, int quantumA, int quantumB, int finalMode) {
                 this.initializeTimeline(timeline);
                 this.initializeQueues();
                 this.quantums = new int[]{quantumA, quantumB};
                 this.logger = new Logger();
+                this.finalMode = finalMode;
         }
 
         public void run() {
@@ -33,7 +35,19 @@ public class MLFQScheduler {
                                 queueB.RR(this.quantums[1], this.logger);
                         }
                         else if (!queueC.isEmpty()) {
-                                queueC.SJF(this.logger);
+                                switch (this.finalMode) {
+                                        case 1:
+                                                queueC.FCFS(this.logger);
+                                                break;
+                                        case 2:
+                                                queueC.SJF(this.logger);
+                                                break;
+                                        case 3:
+                                                queueC.NPP(this.logger);
+                                                break;
+                                        default:
+                                                break;
+                                }
                         } else {
                                 this.logger.incrementTime(1);
                         }
