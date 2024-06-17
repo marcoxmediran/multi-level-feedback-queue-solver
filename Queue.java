@@ -76,6 +76,25 @@ public class Queue {
                 }
         }
 
+        // Non Preemptive Round Robin
+        public void RR(int quantum, Logger logger) {
+                Job currentJob = this.front();
+                if (currentJob.getRemainingTime() <= quantum) {
+                        logger.incrementTime(currentJob.getRemainingTime());
+                        currentJob.setEndTime(logger.time);
+                        currentJob.setRemainingTime(0);
+                        logger.incrementCount();
+                        this.moveToResult();
+                } else {
+                        logger.incrementTime(quantum);
+                        currentJob.setEndTime(logger.time);
+                        currentJob.setRemainingTime(currentJob.getRemainingTime() - quantum);
+                        this.offer();
+                }
+        }
+
+        // PREEMPTIVE ROUND ROBIN
+        /*
         public void RR(int quantum, Logger logger) {
                 Job currentJob = this.front();
                 System.out.println(currentJob.getQuantumTime() + "/" + quantum);
@@ -100,7 +119,10 @@ public class Queue {
                         this.offer();
                 }
         }
+        */
 
+        // PREEMPTIVE FCFS
+        /*
         public void FCFS(Logger logger) {
                 Job currentJob = this.front();
                 logger.incrementTime(1);
@@ -111,6 +133,26 @@ public class Queue {
                         logger.incrementCount();
                         this.moveToResult();
                 }
+        }
+        */
+
+        public void FCFS(Logger logger) {
+                Job currentJob = this.front();
+                logger.incrementTime(currentJob.getRemainingTime());
+                logger.incrementCount();
+                currentJob.setEndTime(logger.time);
+                currentJob.setRemainingTime(0);
+                this.moveToResult();
+        }
+
+        public void SJF(Logger logger) {
+                this.sort("SJF");
+                Job currentJob = this.front();
+                logger.incrementTime(currentJob.getRemainingTime());
+                logger.incrementCount();
+                currentJob.setEndTime(logger.time);
+                currentJob.setRemainingTime(0);
+                this.moveToResult();
         }
 
         public void calculateResults() {
@@ -124,6 +166,9 @@ public class Queue {
                 switch (mode) {
                         case "AT":
                                 this.queue.sort(Comparator.comparing(Job::getArrivalTime));
+                                break;
+                        case "SJF":
+                                this.queue.sort(Comparator.comparing(Job::getRemainingTime));
                                 break;
                         default:
                                 break;

@@ -22,7 +22,7 @@ public class MLFQScheduler {
 
                 while (true) {
                         System.out.printf("[Time %02d]\n", logger.time);
-                        while (!inputQueue.isEmpty() && inputQueue.front().getArrivalTime() == logger.time) {
+                        while (!inputQueue.isEmpty() && inputQueue.front().getArrivalTime() <= logger.time) {
                                 inputQueue.front().setEndTime(logger.time);
                                 System.out.println(inputQueue.front());
                                 inputQueue.offer();
@@ -35,7 +35,7 @@ public class MLFQScheduler {
                                 queueB.RR(2, this.logger);
                         }
                         else if (!queueC.isEmpty()) {
-                                queueC.FCFS(this.logger);
+                                queueC.SJF(this.logger);
                         } else {
                                 this.logger.incrementTime(1);
                         }
