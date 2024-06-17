@@ -7,6 +7,7 @@ public class Job {
         private int endTime;
         private int turnAroundTime;
         private int waitingTime;
+        private int quantumTime;
 
         public Job(char id, int arrivalTime, int burstTime) {
                 this.id = id;
@@ -15,6 +16,7 @@ public class Job {
                 this.remainingTime = burstTime;
                 this.level = 0;
                 this.endTime = arrivalTime;
+                this.quantumTime = 0;
         }
 
         public Job(char id, int arrivalTime, int burstTime, int remainingTime, int level, int endTime, int turnAroundTime, int waitingTime) {
@@ -26,6 +28,7 @@ public class Job {
                 this.endTime = endTime;
                 this.turnAroundTime = turnAroundTime;
                 this.waitingTime = waitingTime;
+                this.quantumTime = 0;
         }
 
         public int getArrivalTime() {
@@ -70,6 +73,18 @@ public class Job {
 
         public void calculateWaitingTime() {
                 this.waitingTime = this.turnAroundTime - this.burstTime;
+        }
+
+        public int getQuantumTime() {
+                return this.quantumTime;
+        }
+
+        public void incrementQuantumTime() {
+                this.quantumTime++;
+        }
+
+        public void resetQuantumTime() {
+                this.quantumTime = 0;
         }
 
         public Job copy() {

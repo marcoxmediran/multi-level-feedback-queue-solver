@@ -29,10 +29,10 @@ public class MLFQScheduler {
                         }
 
                         if (!queueA.isEmpty()) {
-                                queueA.RR(4, this.logger);
+                                queueA.RR(2, this.logger);
                         }
                         else if (!queueB.isEmpty()) {
-                                queueB.RR(4, this.logger);
+                                queueB.RR(2, this.logger);
                         }
                         else if (!queueC.isEmpty()) {
                                 queueC.FCFS(this.logger);

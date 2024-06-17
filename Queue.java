@@ -78,26 +78,26 @@ public class Queue {
 
         public void RR(int quantum, Logger logger) {
                 Job currentJob = this.front();
+                System.out.println(currentJob.getQuantumTime() + "/" + quantum);
                 System.out.println(currentJob);
-                System.out.println(logger.quantumCounter + "/" + quantum);
                 logger.incrementTime(1);
                 currentJob.setEndTime(logger.time);
                 currentJob.decrementRemainingTime(1);
-                logger.incrementQuantumCounter();
+                currentJob.incrementQuantumTime();
 
                 if (currentJob.getRemainingTime() == 0) {
-                        System.out.println(logger.quantumCounter + "/" + quantum);
                         logger.incrementCount();
-                        logger.resetQuantumCounter();
+                        currentJob.resetQuantumTime();
+                        System.out.println(currentJob.getQuantumTime() + "/" + quantum);
                         System.out.println(currentJob);
                         this.moveToResult();
                 }
 
-                if (logger.quantumCounter == quantum) {
-                        System.out.println(logger.quantumCounter + "/" + quantum);
+                if (currentJob.getQuantumTime() == quantum) {
+                        System.out.println(currentJob.getQuantumTime() + "/" + quantum);
                         System.out.println(currentJob);
+                        currentJob.resetQuantumTime();
                         this.offer();
-                        logger.resetQuantumCounter();
                 }
         }
 
