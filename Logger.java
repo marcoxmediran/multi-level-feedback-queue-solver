@@ -1,12 +1,10 @@
 public class Logger {
-        public int time;
-        public int count;
-        public int quantumCounter;
-        
+        private int time;
+        private int count;
+
         public Logger() {
                 this.time = 0;
                 this.count = 0;
-                this.quantumCounter = 0;
         }
 
         public void incrementTime(int t) {
@@ -17,11 +15,11 @@ public class Logger {
                 this.count++;
         }
 
-        public void incrementQuantumCounter() {
-                this.quantumCounter++;
+        public int getTime() {
+                return this.time;
         }
 
-        public void resetQuantumCounter() {
-                this.quantumCounter = 0;
+        public int getCount() {
+                return this.count;
         }
 }

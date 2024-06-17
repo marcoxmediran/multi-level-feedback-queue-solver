@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class Queue {
-        public String name;
+        private String name;
         private ArrayList<Job> queue;
         private Queue next;
         private Queue result;
@@ -28,6 +28,10 @@ public class Queue {
                 this.name = name;
         }
 
+        public String getName() {
+                return this.name;
+        }
+
         public void enqueue(Job job) {
                 this.queue.add(job);
         }
@@ -37,12 +41,10 @@ public class Queue {
         }
 
         public void offer() {
-                System.out.println(this.name + " -> " + this.next.name);
                 this.next.enqueue(this.dequeue());
         }
 
         public void moveToResult() {
-                System.out.println(this.name + " -> " + this.result.name);
                 this.result.enqueue(this.dequeue());
         }
 
@@ -76,71 +78,27 @@ public class Queue {
                 }
         }
 
-        // Non Preemptive Round Robin
         public void RR(int quantum, Logger logger) {
                 Job currentJob = this.front();
                 if (currentJob.getRemainingTime() <= quantum) {
                         logger.incrementTime(currentJob.getRemainingTime());
-                        currentJob.setEndTime(logger.time);
+                        currentJob.setEndTime(logger.getTime());
                         currentJob.setRemainingTime(0);
                         logger.incrementCount();
                         this.moveToResult();
                 } else {
                         logger.incrementTime(quantum);
-                        currentJob.setEndTime(logger.time);
+                        currentJob.setEndTime(logger.getTime());
                         currentJob.setRemainingTime(currentJob.getRemainingTime() - quantum);
                         this.offer();
                 }
         }
 
-        // PREEMPTIVE ROUND ROBIN
-        /*
-        public void RR(int quantum, Logger logger) {
-                Job currentJob = this.front();
-                System.out.println(currentJob.getQuantumTime() + "/" + quantum);
-                System.out.println(currentJob);
-                logger.incrementTime(1);
-                currentJob.setEndTime(logger.time);
-                currentJob.decrementRemainingTime(1);
-                currentJob.incrementQuantumTime();
-
-                if (currentJob.getRemainingTime() == 0) {
-                        logger.incrementCount();
-                        currentJob.resetQuantumTime();
-                        System.out.println(currentJob.getQuantumTime() + "/" + quantum);
-                        System.out.println(currentJob);
-                        this.moveToResult();
-                }
-
-                if (currentJob.getQuantumTime() == quantum) {
-                        System.out.println(currentJob.getQuantumTime() + "/" + quantum);
-                        System.out.println(currentJob);
-                        currentJob.resetQuantumTime();
-                        this.offer();
-                }
-        }
-        */
-
-        // PREEMPTIVE FCFS
-        /*
-        public void FCFS(Logger logger) {
-                Job currentJob = this.front();
-                logger.incrementTime(1);
-                currentJob.setEndTime(logger.time);
-                currentJob.decrementRemainingTime(1);
-
-                if (currentJob.getRemainingTime() == 0) {
-                        logger.incrementCount();
-                        this.moveToResult();
-                }
-        }
-        */
-
         public void FCFS(Logger logger) {
                 Job currentJob = this.front();
                 logger.incrementTime(currentJob.getRemainingTime());
                 logger.incrementCount();
-                currentJob.setEndTime(logger.time);
+                currentJob.setEndTime(logger.getTime());
                 currentJob.setRemainingTime(0);
                 this.moveToResult();
         }
@@ -150,9 +108,14 @@ public class Queue {
                 Job currentJob = this.front();
                 logger.incrementTime(currentJob.getRemainingTime());
                 logger.incrementCount();
-                currentJob.setEndTime(logger.time);
+                currentJob.setEndTime(logger.getTime());
                 currentJob.setRemainingTime(0);
                 this.moveToResult();
+        }
+
+        // TODO
+        public void NPP(Logger logger) {
+                
         }
 
         public void calculateResults() {

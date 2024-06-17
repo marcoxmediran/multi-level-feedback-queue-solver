@@ -8,31 +8,29 @@ public class MLFQScheduler {
         private int[] quantums;
         private Logger logger;
 
-        public MLFQScheduler(Queue timeline) {
+        public MLFQScheduler(Queue timeline, int quantumA, int quantumB) {
                 this.initializeTimeline(timeline);
                 this.initializeQueues();
-                this.quantums = new int[]{4, 2};
+                this.quantums = new int[]{quantumA, quantumB};
                 this.logger = new Logger();
         }
 
         public void run() {
-                System.out.println("[inputQueue]");
-                inputQueue.print();
+                System.out.println("[TIMELINE]");
+                this.timeline.print();
                 System.out.println("");
 
                 while (true) {
-                        System.out.printf("[Time %02d]\n", logger.time);
-                        while (!inputQueue.isEmpty() && inputQueue.front().getArrivalTime() <= logger.time) {
-                                inputQueue.front().setEndTime(logger.time);
-                                System.out.println(inputQueue.front());
+                        while (!inputQueue.isEmpty() && inputQueue.front().getArrivalTime() <= logger.getTime()) {
+                                inputQueue.front().setEndTime(logger.getTime());
                                 inputQueue.offer();
                         }
 
                         if (!queueA.isEmpty()) {
-                                queueA.RR(2, this.logger);
+                                queueA.RR(this.quantums[0], this.logger);
                         }
                         else if (!queueB.isEmpty()) {
-                                queueB.RR(2, this.logger);
+                                queueB.RR(this.quantums[1], this.logger);
                         }
                         else if (!queueC.isEmpty()) {
                                 queueC.SJF(this.logger);
@@ -40,11 +38,12 @@ public class MLFQScheduler {
                                 this.logger.incrementTime(1);
                         }
 
-                        if (this.logger.count == this.timeline.size())
+                        if (this.logger.getCount() == this.timeline.size())
                                 break;
 
                 }
                 resultQueue.calculateResults();
+                System.out.println("[RESULTS]");
                 resultQueue.print();
         }
 

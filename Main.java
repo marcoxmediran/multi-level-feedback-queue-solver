@@ -1,19 +1,12 @@
 public class Main {
         public static void main(String[] args) {
-                /*
-                Job a = new Job('a', 0, 3);
-                Job b = new Job('b', 0, 8);
-                Job c = new Job('c', 2, 10);
-                Job d = new Job('d', 2, 1);
-                Job e = new Job('e', 14, 5);
-                */
-                Job a = new Job('a', 0, 3);
-                Job b = new Job('b', 5, 6);
-                Job c = new Job('c', 7, 5);
-                Job d = new Job('d', 10, 7);
-                Job e = new Job('e', 8, 12);
-                Job f = new Job('f', 15, 3);
-                Job g = new Job('g', 18, 7);
+                Job a = new Job('a', 0, 3, 0);
+                Job b = new Job('b', 5, 6, 0);
+                Job c = new Job('c', 7, 5, 0);
+                Job d = new Job('d', 10, 7, 0);
+                Job e = new Job('e', 8, 12, 0);
+                Job f = new Job('f', 15, 3, 0);
+                Job g = new Job('g', 18, 7, 0);
 
                 Queue timeline = new Queue("TIMELINE");
                 timeline.enqueue(a);
@@ -23,7 +16,8 @@ public class Main {
                 timeline.enqueue(e);
                 timeline.enqueue(f);
                 timeline.enqueue(g);
-                MLFQScheduler mlfqScheduler = new MLFQScheduler(timeline);
+
+                MLFQScheduler mlfqScheduler = new MLFQScheduler(timeline, 2, 2);
                 mlfqScheduler.run();
         }
 }

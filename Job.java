@@ -9,7 +9,7 @@ public class Job {
         private int waitingTime;
         private int quantumTime;
 
-        public Job(char id, int arrivalTime, int burstTime) {
+        public Job(char id, int arrivalTime, int burstTime, int priority) {
                 this.id = id;
                 this.arrivalTime = arrivalTime;
                 this.burstTime = burstTime;
