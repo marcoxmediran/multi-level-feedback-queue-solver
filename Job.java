@@ -43,6 +43,14 @@ public class Job {
                 this.remainingTime = time;
         }
 
+        public void incrementLevel() {
+                this.level++;
+        }
+
+        public int getLevel() {
+                return this.level;
+        }
+
         public int getTurnAroundTime() {
                 return this.turnAroundTime;
         }
@@ -92,6 +100,6 @@ public class Job {
         }
 
         public String toString() {
-                return this.id + "\t" + this.arrivalTime + "\t" + this.burstTime + "\t" + this.remainingTime + "\t" + this.endTime + "\t" + this.turnAroundTime + "\t" + this.waitingTime;
+                return this.id + "\t" + this.arrivalTime + "\t" + this.burstTime + "\t" + this.remainingTime + "\t" + this.level + "\t" + this.endTime + "\t" + this.turnAroundTime + "\t" + this.waitingTime;
         }
 }

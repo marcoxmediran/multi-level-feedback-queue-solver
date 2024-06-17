@@ -25,7 +25,7 @@ public class MLFQScheduler {
                 while (true) {
                         while (!inputQueue.isEmpty() && inputQueue.front().getArrivalTime() <= logger.getTime()) {
                                 inputQueue.front().setEndTime(logger.getTime());
-                                inputQueue.offer();
+                                queueA.enqueue(inputQueue.dequeue());
                         }
 
                         if (!queueA.isEmpty()) {

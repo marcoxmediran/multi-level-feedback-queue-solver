@@ -41,7 +41,9 @@ public class Queue {
         }
 
         public void offer() {
-                this.next.enqueue(this.dequeue());
+                Job toOffer = this.dequeue();
+                toOffer.incrementLevel();
+                this.next.enqueue(toOffer);
         }
 
         public void moveToResult() {
@@ -139,7 +141,7 @@ public class Queue {
         }
 
         public void print() {
-                System.out.println("ID\tAT\tBT\tRT\tET\tTaT\tWT");
+                System.out.println("ID\tAT\tBT\tRT\tLevel\tET\tTaT\tWT");
                 for (Job job : this.queue) {
                         System.out.println(job);
                 }
